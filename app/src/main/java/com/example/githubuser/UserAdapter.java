@@ -17,6 +17,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
     private ArrayList<User> mUser = new ArrayList<>();
+    private OnItemClickCallback onItemClickCallback;
+
+    public void setOnItemClickCallback(OnItemClickCallback onItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback;
+    }
 
     public void setUser(ArrayList<User> items) {
         mUser.clear();
@@ -32,7 +37,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserAdapter.UserViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final UserAdapter.UserViewHolder holder, int position) {
         User user = mUser.get(position);
 
         Glide.with(holder.itemView.getContext())
@@ -42,6 +47,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
         holder.tvUsername.setText(user.getUsername());
         holder.tvTypeUser.setText(user.getTypeUser());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemClickCallback.onItemCliked(mUser.get(holder.getAdapterPosition()));
+            }
+        });
     }
 
     @Override
@@ -61,5 +73,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             tvUsername = itemView.findViewById(R.id.tv_username);
             tvTypeUser = itemView.findViewById(R.id.tv_type_user);
         }
+    }
+
+    public interface OnItemClickCallback{
+        void onItemCliked(User data);
     }
 }

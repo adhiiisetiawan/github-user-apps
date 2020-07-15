@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -37,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(userAdapter);
         setUser();
 
+        userAdapter.setOnItemClickCallback(new UserAdapter.OnItemClickCallback() {
+            @Override
+            public void onItemCliked(User data) {
+                Toast.makeText(MainActivity.this, data.getUsername(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void showLoading(Boolean state){
