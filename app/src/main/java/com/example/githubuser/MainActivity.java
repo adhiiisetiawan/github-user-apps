@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -55,7 +56,9 @@ public class MainActivity extends AppCompatActivity {
         userAdapter.setOnItemClickCallback(new UserAdapter.OnItemClickCallback() {
             @Override
             public void onItemCliked(User data) {
-                Toast.makeText(MainActivity.this, data.getUsername(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, data.getUsername(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, DetailUserActivity.class);
+                startActivity(intent);
             }
         });
     }
