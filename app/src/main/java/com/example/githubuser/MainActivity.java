@@ -1,6 +1,8 @@
 package com.example.githubuser;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +25,7 @@ import cz.msebera.android.httpclient.Header;
 public class MainActivity extends AppCompatActivity {
     private UserAdapter userAdapter;
     private ProgressBar progressBar;
+    private MainViewModel mainViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,18 @@ public class MainActivity extends AppCompatActivity {
         userAdapter = new UserAdapter();
         userAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(userAdapter);
-        setUser();
+
+        mainViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
+        mainViewModel.setUserViewModel();
+        mainViewModel.getUserViewModel().observe(this, new Observer<ArrayList<User>>() {
+            @Override
+            public void onChanged(ArrayList<User> users) {
+                if (users != null){
+                    userAdapter.setUser(users);
+                    showLoading(false);
+                }
+            }
+        });
 
         userAdapter.setOnItemClickCallback(new UserAdapter.OnItemClickCallback() {
             @Override
@@ -52,41 +66,5 @@ public class MainActivity extends AppCompatActivity {
         } else {
             progressBar.setVisibility(View.GONE);
         }
-    }
-
-    public void setUser(){
-        final ArrayList<User> userArrayList = new ArrayList<>();
-
-        String url = "https://api.github.com/users";
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.addHeader("Authorization","token 6d62adc8cecb3a300ff29b1164bffdad4cc46d01");
-        client.addHeader("User-Agent", "request");
-        client.get(url, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String result = new String(responseBody);
-                Log.d("Success", result);
-                try {
-                    JSONArray jsonArray = new JSONArray(result);
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject list = jsonArray.getJSONObject(i);
-                        User mUser = new User();
-                        mUser.setUsername(list.getString("login"));
-                        mUser.setTypeUser(list.getString("type"));
-                        mUser.setAvatarUrl(list.getString("avatar_url"));
-                        userArrayList.add(mUser);
-                    }
-                    userAdapter.setUser(userArrayList);
-                    showLoading(false);
-                }catch (Exception e){
-                    Log.d("Exception", e.getMessage());
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.d("onFailure", error.getMessage());
-            }
-        });
     }
 }
