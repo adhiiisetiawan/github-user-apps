@@ -50,10 +50,7 @@ public class DetailUserActivity extends AppCompatActivity {
         tvLocation = findViewById(R.id.tv_location_profile);
         imgAvatarProfile = findViewById(R.id.img_avatar_profile);
         progressBarProfile = findViewById(R.id.progressbar_profile);
-//        User user = getIntent().getParcelableExtra(EXTRA_USERNAME);
-//
-//        String text = "Haloo " + user.getUsername();
-//        tvUsernameProfile.setText(text);
+
         setUserDetail();
     }
 
