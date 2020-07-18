@@ -18,6 +18,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class MainViewModel extends ViewModel {
     private MutableLiveData<ArrayList<User>> listUserMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<User>> listSearchUserMutableLiveData = new MutableLiveData<>();
 
     void setUserViewModel(){
         final ArrayList<User> userArrayList = new ArrayList<>();
@@ -56,5 +57,45 @@ public class MainViewModel extends ViewModel {
 
     LiveData<ArrayList<User>> getUserViewModel(){
         return listUserMutableLiveData;
+    }
+
+    void setSearchUserViewModel(String username){
+        final ArrayList<User> userArrayList = new ArrayList<>();
+
+        String url = "https://api.github.com/search/users?q="+username;
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.addHeader("Authorization","token 6d62adc8cecb3a300ff29b1164bffdad4cc46d01");
+        client.addHeader("User-Agent", "request");
+        client.get(url, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String result = new String(responseBody);
+                Log.d("Success ", result);
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    JSONArray items = jsonObject.getJSONArray("items");
+                    for (int i = 0; i < items.length(); i++) {
+                        JSONObject list = items.getJSONObject(i);
+                        User mUser = new User();
+                        mUser.setUsername(list.getString("login"));
+                        mUser.setTypeUser(list.getString("type"));
+                        mUser.setAvatarUrl(list.getString("avatar_url"));
+                        userArrayList.add(mUser);
+                    }
+                    listSearchUserMutableLiveData.setValue(userArrayList);
+                }catch (Exception e){
+                    Log.d("Exception", e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("onFailure", error.getMessage());
+            }
+        });
+    }
+
+    LiveData<ArrayList<User>> getSearchUserViewModel(){
+        return listSearchUserMutableLiveData;
     }
 }

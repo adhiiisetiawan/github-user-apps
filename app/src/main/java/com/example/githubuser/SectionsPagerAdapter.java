@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
     private final Context mContext;
+    public static String username;
 
     public SectionsPagerAdapter(Context context, FragmentManager fragmentManager){
         super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
@@ -23,7 +24,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment = null;
         switch (position){
             case 0:
-                fragment = new FollowersFragment();
+                fragment = new FollowersFragment().newInstance(username);
                 break;
             case 1:
                 fragment = new FollowingFragment();

@@ -36,7 +36,10 @@ public class DetailUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_user);
 
+        User mUser = getIntent().getParcelableExtra(EXTRA_USERNAME);
+
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this,getSupportFragmentManager());
+        sectionsPagerAdapter.username = mUser.getUsername();
         ViewPager viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabLayout = findViewById(R.id.tabs);
@@ -82,6 +85,8 @@ public class DetailUserActivity extends AppCompatActivity {
                     tvName.setText(name);
                     tvUsernameProfile.setText(username);
                     tvLocation.setText(location);
+
+
                 }catch (Exception e){
                     Log.d("Failed", e.getMessage());
                     e.printStackTrace();

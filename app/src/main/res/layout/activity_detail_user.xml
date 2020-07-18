@@ -72,6 +72,6 @@
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#EAE3E3"/>
+        android:background="#F8F6F6"/>
 
 </LinearLayout>
