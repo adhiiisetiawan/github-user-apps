@@ -27,7 +27,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 fragment = new FollowersFragment().newInstance(username);
                 break;
             case 1:
-                fragment = new FollowingFragment();
+                fragment = new FollowingFragment().newInstance(username);
                 break;
         }
         return fragment;
