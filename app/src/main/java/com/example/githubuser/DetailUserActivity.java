@@ -35,6 +35,7 @@ public class DetailUserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_user);
+        getSupportActionBar().setTitle(R.string.detail_user);
 
         User mUser = getIntent().getParcelableExtra(EXTRA_USERNAME);
 
