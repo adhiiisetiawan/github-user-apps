@@ -51,6 +51,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mainViewModel.getSearchUserViewModel().observe(MainActivity.this, new Observer<ArrayList<User>>() {
+            @Override
+            public void onChanged(ArrayList<User> users) {
+                if (users != null){
+                    userAdapter.setUser(users);
+                    showLoading(false);
+                }
+            }
+        });
+
         userAdapter.setOnItemClickCallback(new UserAdapter.OnItemClickCallback() {
             @Override
             public void onItemCliked(User data) {
@@ -85,15 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 public boolean onQueryTextSubmit(String s) {
                     mainViewModel = new ViewModelProvider(MainActivity.this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
                     mainViewModel.setSearchUserViewModel(s);
-                    mainViewModel.getSearchUserViewModel().observe(MainActivity.this, new Observer<ArrayList<User>>() {
-                        @Override
-                        public void onChanged(ArrayList<User> users) {
-                            if (users != null){
-                                userAdapter.setUser(users);
-                                showLoading(false);
-                            }
-                        }
-                    });
+                    showLoading(true);
                     return true;
                 }
 
@@ -101,15 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 public boolean onQueryTextChange(String s) {
                     mainViewModel = new ViewModelProvider(MainActivity.this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
                     mainViewModel.setSearchUserViewModel(s);
-                    mainViewModel.getSearchUserViewModel().observe(MainActivity.this, new Observer<ArrayList<User>>() {
-                        @Override
-                        public void onChanged(ArrayList<User> users) {
-                            if (users != null){
-                                userAdapter.setUser(users);
-                                showLoading(false);
-                            }
-                        }
-                    });
+                    showLoading(true);
                     return true;
                 }
             });
