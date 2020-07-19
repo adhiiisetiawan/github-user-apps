@@ -82,8 +82,6 @@ public class DetailUserActivity extends AppCompatActivity {
                     tvName.setText(name);
                     tvUsernameProfile.setText(username);
                     tvLocation.setText(location);
-
-
                 }catch (Exception e){
                     Log.d("Failed", e.getMessage());
                     e.printStackTrace();

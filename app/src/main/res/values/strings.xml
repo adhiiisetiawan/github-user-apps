@@ -3,9 +3,9 @@
     <string name="username">Username</string>
     <string name="type_user">Type User</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tab_followers">Followers</string>
     <string name="tab_following">Following</string>
     <string name="search">Search</string>
     <string name="search_hint">Input Username</string>
+    <string name="settings">Settings</string>
 </resources>
