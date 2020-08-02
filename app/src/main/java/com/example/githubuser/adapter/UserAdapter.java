@@ -1,4 +1,4 @@
-package com.example.githubuser;
+package com.example.githubuser.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.githubuser.R;
+import com.example.githubuser.model.User;
 
 import java.util.ArrayList;
 

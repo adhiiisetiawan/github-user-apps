@@ -1,4 +1,4 @@
-package com.example.githubuser;
+package com.example.githubuser.follow;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.example.githubuser.ui.DetailUserActivity;
+import com.example.githubuser.R;
+import com.example.githubuser.adapter.UserAdapter;
+import com.example.githubuser.model.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -27,47 +31,47 @@ import cz.msebera.android.httpclient.Header;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link FollowersFragment#newInstance} factory method to
+ * Use the {@link FollowingFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FollowersFragment extends Fragment {
+public class FollowingFragment extends Fragment {
     private static final String ARG_USERNAME = "username";
     private UserAdapter userAdapter;
-    private ProgressBar progressBarFollowers;
+    private ProgressBar progressBarFollowing;
 
-
-    public FollowersFragment() {
+    public FollowingFragment() {
         // Required empty public constructor
     }
 
     // TODO: Rename and change types and number of parameters
-    public static FollowersFragment newInstance(String username) {
-        FollowersFragment fragment = new FollowersFragment();
+    public static FollowingFragment newInstance(String username) {
+        FollowingFragment fragment = new FollowingFragment();
         Bundle args = new Bundle();
         args.putString(ARG_USERNAME, username);
         fragment.setArguments(args);
         return fragment;
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_followers, container, false);
+        return inflater.inflate(R.layout.fragment_following, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        progressBarFollowers = view.findViewById(R.id.progressbar_followers);
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerview_followers);
+        progressBarFollowing = view.findViewById(R.id.progressbar_following);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerview_following);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         userAdapter = new UserAdapter();
         userAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(userAdapter);
 
-        getDataFollowers();
+        getDataFollowing();
 
         userAdapter.setOnItemClickCallback(new UserAdapter.OnItemClickCallback() {
             @Override
@@ -77,21 +81,22 @@ public class FollowersFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
     }
 
-    public void getDataFollowers(){
-        progressBarFollowers.setVisibility(View.VISIBLE);
+    public void getDataFollowing(){
+        progressBarFollowing.setVisibility(View.VISIBLE);
         final ArrayList<User> userArrayList = new ArrayList<>();
         String username = getArguments().getString(ARG_USERNAME);
 
-        String url = "https://api.github.com/users/"+username+"/followers";
+        String url = "https://api.github.com/users/"+username+"/following";
         AsyncHttpClient client = new AsyncHttpClient();
         client.addHeader("Authorization","token 6d62adc8cecb3a300ff29b1164bffdad4cc46d01");
         client.addHeader("User-Agent", "request");
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                progressBarFollowers.setVisibility(View.INVISIBLE);
+                progressBarFollowing.setVisibility(View.INVISIBLE);
                 String result = new String(responseBody);
                 Log.d("Success", result);
                 try {
@@ -112,7 +117,7 @@ public class FollowersFragment extends Fragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                progressBarFollowers.setVisibility(View.INVISIBLE);
+                progressBarFollowing.setVisibility(View.INVISIBLE);
                 Log.d("onFailure", error.getMessage());
             }
         });

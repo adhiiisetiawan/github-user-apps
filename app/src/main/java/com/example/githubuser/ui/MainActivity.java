@@ -1,7 +1,5 @@
-package com.example.githubuser;
+package com.example.githubuser.ui;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -15,12 +13,14 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.githubuser.R;
+import com.example.githubuser.adapter.UserAdapter;
+import com.example.githubuser.model.User;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;

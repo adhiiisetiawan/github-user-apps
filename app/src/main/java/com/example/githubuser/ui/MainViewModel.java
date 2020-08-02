@@ -1,4 +1,4 @@
-package com.example.githubuser;
+package com.example.githubuser.ui;
 
 import android.util.Log;
 
@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.githubuser.model.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
