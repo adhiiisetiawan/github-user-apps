@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.githubuser.BuildConfig;
 import com.example.githubuser.R;
 import com.example.githubuser.adapter.SectionsPagerAdapter;
 import com.example.githubuser.model.User;
@@ -68,11 +69,12 @@ public class DetailUserActivity extends AppCompatActivity {
     }
 
     private void setUserDetail(){
+        String API_KEY = BuildConfig.API_KEY;
         progressBarProfile.setVisibility(View.VISIBLE);
         final User user = getIntent().getParcelableExtra(EXTRA_USERNAME);
         String url = "https://api.github.com/users/"+user.getUsername();
         AsyncHttpClient client = new AsyncHttpClient();
-        client.addHeader("Authorization","token 6d62adc8cecb3a300ff29b1164bffdad4cc46d01");
+        client.addHeader("Authorization",API_KEY);
         client.addHeader("User-Agent", "request");
         client.get(url, new AsyncHttpResponseHandler() {
             @Override

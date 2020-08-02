@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.githubuser.BuildConfig;
 import com.example.githubuser.model.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -20,13 +21,14 @@ import cz.msebera.android.httpclient.Header;
 public class MainViewModel extends ViewModel {
     private MutableLiveData<ArrayList<User>> listUserMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<ArrayList<User>> listSearchUserMutableLiveData = new MutableLiveData<>();
+    String API_KEY = BuildConfig.API_KEY;
 
     void setUserViewModel(){
         final ArrayList<User> userArrayList = new ArrayList<>();
 
         String url = "https://api.github.com/users";
         AsyncHttpClient client = new AsyncHttpClient();
-        client.addHeader("Authorization","token 6d62adc8cecb3a300ff29b1164bffdad4cc46d01");
+        client.addHeader("Authorization", API_KEY);
         client.addHeader("User-Agent", "request");
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
@@ -65,7 +67,7 @@ public class MainViewModel extends ViewModel {
 
         String url = "https://api.github.com/search/users?q="+username;
         AsyncHttpClient client = new AsyncHttpClient();
-        client.addHeader("Authorization","token 6d62adc8cecb3a300ff29b1164bffdad4cc46d01");
+        client.addHeader("Authorization",API_KEY);
         client.addHeader("User-Agent", "request");
         client.get(url, new AsyncHttpResponseHandler() {
             @Override

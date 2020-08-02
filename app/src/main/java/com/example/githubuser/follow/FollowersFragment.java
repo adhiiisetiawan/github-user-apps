@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.example.githubuser.BuildConfig;
 import com.example.githubuser.ui.DetailUserActivity;
 import com.example.githubuser.R;
 import com.example.githubuser.adapter.UserAdapter;
@@ -84,13 +85,14 @@ public class FollowersFragment extends Fragment {
     }
 
     public void getDataFollowers(){
+        String API_KEY = BuildConfig.API_KEY;
         progressBarFollowers.setVisibility(View.VISIBLE);
         final ArrayList<User> userArrayList = new ArrayList<>();
         String username = getArguments().getString(ARG_USERNAME);
 
         String url = "https://api.github.com/users/"+username+"/followers";
         AsyncHttpClient client = new AsyncHttpClient();
-        client.addHeader("Authorization","token 6d62adc8cecb3a300ff29b1164bffdad4cc46d01");
+        client.addHeader("Authorization",API_KEY);
         client.addHeader("User-Agent", "request");
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
