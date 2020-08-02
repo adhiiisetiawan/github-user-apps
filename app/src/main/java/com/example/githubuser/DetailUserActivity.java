@@ -1,10 +1,14 @@
 package com.example.githubuser;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -36,6 +40,11 @@ public class DetailUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_user);
         getSupportActionBar().setTitle(R.string.detail_user);
+
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle("Detail User");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         User mUser = getIntent().getParcelableExtra(EXTRA_USERNAME);
 
@@ -111,5 +120,21 @@ public class DetailUserActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,17 +21,40 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private UserAdapter userAdapter;
     private ProgressBar progressBar;
     private MainViewModel mainViewModel;
+    private TextInputEditText txtSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        txtSearch = findViewById(R.id.edt_text_search);
+        txtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                mainViewModel = new ViewModelProvider(MainActivity.this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
+                mainViewModel.setSearchUserViewModel(editable.toString());
+                showLoading(true);
+            }
+        });
 
         progressBar = findViewById(R.id.progressbar_main);
         RecyclerView recyclerView = findViewById(R.id.recyclerview_main);
@@ -83,31 +108,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
-
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-
-        if (searchManager != null){
-            SearchView searchView = (SearchView) (menu.findItem(R.id.search_view)).getActionView();
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-            searchView.setQueryHint(getResources().getString(R.string.search_hint));
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String s) {
-                    mainViewModel = new ViewModelProvider(MainActivity.this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-                    mainViewModel.setSearchUserViewModel(s);
-                    showLoading(true);
-                    return true;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String s) {
-                    mainViewModel = new ViewModelProvider(MainActivity.this, new ViewModelProvider.NewInstanceFactory()).get(MainViewModel.class);
-                    mainViewModel.setSearchUserViewModel(s);
-                    showLoading(true);
-                    return true;
-                }
-            });
-        }
         return super.onCreateOptionsMenu(menu);
     }
 
