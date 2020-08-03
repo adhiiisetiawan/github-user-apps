@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,7 +20,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.githubuser.BuildConfig;
 import com.example.githubuser.R;
 import com.example.githubuser.adapter.SectionsPagerAdapter;
+import com.example.githubuser.database.FavoriteUserHelper;
 import com.example.githubuser.model.User;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -29,15 +32,24 @@ import org.json.JSONObject;
 import cz.msebera.android.httpclient.Header;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.example.githubuser.database.DatabaseContract.FavoriteColumns.AVATAR_URL;
+import static com.example.githubuser.database.DatabaseContract.FavoriteColumns.LOCATION;
+import static com.example.githubuser.database.DatabaseContract.FavoriteColumns.NAME;
+import static com.example.githubuser.database.DatabaseContract.FavoriteColumns.USERNAME;
+
 public class DetailUserActivity extends AppCompatActivity {
     public static final String EXTRA_USERNAME = "extra_username";
 
     private ProgressBar progressBarProfile;
+    private FloatingActionButton fab;
 
     private TextView tvName;
     private TextView tvUsernameProfile;
     private TextView tvLocation;
     private CircleImageView imgAvatarProfile;
+    Boolean statusFavorite = false;
+    private FavoriteUserHelper favoriteUserHelper;
+    private String name, username, avatar, location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +61,10 @@ public class DetailUserActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("Detail User");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        fab = findViewById(R.id.floating_action);
+
+
 
         User mUser = getIntent().getParcelableExtra(EXTRA_USERNAME);
 
@@ -66,6 +82,26 @@ public class DetailUserActivity extends AppCompatActivity {
         progressBarProfile = findViewById(R.id.progressbar_profile);
 
         setUserDetail();
+
+        favoriteUserHelper = FavoriteUserHelper.getInstance(getApplicationContext());
+        favoriteUserHelper.open();
+
+        setStatusFavorite(statusFavorite);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                statusFavorite = !statusFavorite;
+                //insert code here
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(NAME, name);
+                contentValues.put(USERNAME, username);
+                contentValues.put(AVATAR_URL, avatar);
+                contentValues.put(LOCATION, location);
+
+                favoriteUserHelper.insert(contentValues);
+                setStatusFavorite(statusFavorite);
+            }
+        });
     }
 
     private void setUserDetail(){
@@ -84,10 +120,10 @@ public class DetailUserActivity extends AppCompatActivity {
                 Log.d("Success", result);
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                    String name = jsonObject.getString("name");
-                    String location = jsonObject.getString("location");
-                    String username = jsonObject.getString("login");
-                    String avatar = jsonObject.getString("avatar_url");
+                    name = jsonObject.getString("name");
+                    location = jsonObject.getString("location");
+                    username = jsonObject.getString("login");
+                    avatar = jsonObject.getString("avatar_url");
 
                     Glide.with(DetailUserActivity.this)
                             .load(avatar)
@@ -125,6 +161,14 @@ public class DetailUserActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void setStatusFavorite(Boolean statusFavorite){
+        if (statusFavorite){
+            fab.setImageResource(R.drawable.ic_baseline_favorite_24);
+        } else {
+            fab.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+        }
     }
 
     @Override

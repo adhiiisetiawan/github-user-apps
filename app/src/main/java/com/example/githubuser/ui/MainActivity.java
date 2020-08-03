@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.githubuser.R;
 import com.example.githubuser.adapter.UserAdapter;
+import com.example.githubuser.database.FavoriteUserHelper;
 import com.example.githubuser.model.User;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -30,11 +31,15 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private MainViewModel mainViewModel;
     private TextInputEditText txtSearch;
+    private FavoriteUserHelper favoriteUserHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        favoriteUserHelper = FavoriteUserHelper.getInstance(getApplicationContext());
+        favoriteUserHelper.open();
 
         txtSearch = findViewById(R.id.edt_text_search);
         txtSearch.addTextChangedListener(new TextWatcher() {
@@ -118,5 +123,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intentSettings);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        favoriteUserHelper.close();
     }
 }
