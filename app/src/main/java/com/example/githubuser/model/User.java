@@ -4,9 +4,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class User implements Parcelable {
+    private String name;
     private String username;
     private String avatarUrl;
     private String typeUser;
+    private String location;
 
     protected User(Parcel in) {
         username = in.readString();
@@ -41,6 +43,14 @@ public class User implements Parcelable {
         }
     };
 
+    public User(String name, String username, String avatarUrl, String typeUser, String location) {
+        this.name = name;
+        this.username = username;
+        this.avatarUrl = avatarUrl;
+        this.typeUser = typeUser;
+        this.location = location;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -63,5 +73,21 @@ public class User implements Parcelable {
 
     public void setTypeUser(String typeUser) {
         this.typeUser = typeUser;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
