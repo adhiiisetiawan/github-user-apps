@@ -30,6 +30,8 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import cz.msebera.android.httpclient.Header;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -84,22 +86,31 @@ public class DetailUserActivity extends AppCompatActivity {
 
         //ini tempat set detail dari API
         setUserDetail();
-
+//        User userCek = new User();
         favoriteUserHelper = FavoriteUserHelper.getInstance(getApplicationContext());
         favoriteUserHelper.open();
 
         //Saya coba Log disini nilai usernamenya null mengikuti varibale global,
         //padahal maksud saya di get API dulu kemudian ambil nilai usernamenya
-        Log.d(DetailUserActivity.class.getSimpleName(),"Isi Username: " + username);
+        Log.d(DetailUserActivity.class.getSimpleName(),"Isi Username: " + mUser.getUsername());
 
         //nilai statusFavorite disini saya jadikan global karena tidak bisa dipasang disini
 //        Boolean statusFavorite = false;
-        setStatusFavorite(statusFavorite);
 
+
+
+//        Log.d(DetailUserActivity.class.getSimpleName(), "Isi Cursor " + cursor);
+        Cursor cursor = favoriteUserHelper.queryByUsername(mUser.getUsername());
+        if (cursor.getCount() >= 1){
+            setStatusFavorite(true);
+//            Toast.makeText(this, "Favorite", Toast.LENGTH_SHORT).show();
+        } else {
+            setStatusFavorite(false);
+        }
+//        setStatusFavorite(statusFavorite);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 statusFavorite = !statusFavorite;
                 //insert code here
 
@@ -107,12 +118,17 @@ public class DetailUserActivity extends AppCompatActivity {
                 // tp sepertinya kurang tepat karena ada di dalam onclick,
                 //harusnya diluar onclick, tapi ketika diluar onclick....
                 // tidak bisa mengambill nilai username, karena null
-//                Cursor cursor = favoriteUserHelper.queryByUsername(username);
-//                if (cursor != null){
-//                    setStatusFavorite(true);
-//                }
-                insertDatabase(name, username, avatar, location);
-                setStatusFavorite(statusFavorite);
+//                Log.d(DetailUserActivity.class.getSimpleName(), "Onclick FAB: "+username +" " + location);
+                Cursor cursor = favoriteUserHelper.queryByUsername(username);
+                if (cursor.getCount() < 1){
+                    insertDatabase(name, username, avatar, location);
+                    Toast.makeText(DetailUserActivity.this, "Favorite", Toast.LENGTH_SHORT).show();
+                    setStatusFavorite(true);
+                }else if (cursor.getCount() >=1){
+                    favoriteUserHelper.deleteById(username);
+                    Toast.makeText(DetailUserActivity.this, "Delete", Toast.LENGTH_SHORT).show();
+                    setStatusFavorite(false);
+                }
             }
         });
     }
@@ -184,15 +200,16 @@ public class DetailUserActivity extends AppCompatActivity {
         contentValues.put(LOCATION, location);
 
         favoriteUserHelper.insert(contentValues);
-
     }
 
-    private void setStatusFavorite(Boolean statusFavorite){
+    private boolean setStatusFavorite(Boolean statusFavorite){
         if (statusFavorite){
             fab.setImageResource(R.drawable.ic_baseline_favorite_24);
         } else {
             fab.setImageResource(R.drawable.ic_baseline_favorite_border_24);
         }
+
+        return statusFavorite;
     }
 
     @Override

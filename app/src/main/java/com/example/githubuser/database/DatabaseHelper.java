@@ -11,7 +11,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_FAVORITE_USER = String.format("CREATE TABLE %s"
                 + " (%s INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + " %s TEXT NOT NULL,"
-                + " %s TEXT NOT NULL,"
+                + " %s TEXT NOT NULL UNIQUE,"
                 + " %s TEXT NOT NULL,"
                 + " %s TEXT NOT NULL)",
             DatabaseContract.TABLE_NAME,
