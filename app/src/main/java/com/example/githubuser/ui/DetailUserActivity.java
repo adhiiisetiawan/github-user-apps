@@ -50,7 +50,7 @@ public class DetailUserActivity extends AppCompatActivity {
     private CircleImageView imgAvatarProfile;
     Boolean statusFavorite = false;
     private FavoriteUserHelper favoriteUserHelper;
-    private String name, username = "aaaa", avatar, location;
+    private static String name, username, avatar, location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,10 +107,10 @@ public class DetailUserActivity extends AppCompatActivity {
                 // tp sepertinya kurang tepat karena ada di dalam onclick,
                 //harusnya diluar onclick, tapi ketika diluar onclick....
                 // tidak bisa mengambill nilai username, karena null
-                Cursor cursor = favoriteUserHelper.queryByUsername(username);
-                if (cursor != null){
-                    setStatusFavorite(true);
-                }
+//                Cursor cursor = favoriteUserHelper.queryByUsername(username);
+//                if (cursor != null){
+//                    setStatusFavorite(true);
+//                }
                 insertDatabase(name, username, avatar, location);
                 setStatusFavorite(statusFavorite);
             }

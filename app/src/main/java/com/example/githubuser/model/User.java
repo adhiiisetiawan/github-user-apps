@@ -11,9 +11,11 @@ public class User implements Parcelable {
     private String location;
 
     protected User(Parcel in) {
+        name = in.readString();
         username = in.readString();
         avatarUrl = in.readString();
         typeUser = in.readString();
+        location = in.readString();
     }
 
     public User() {
@@ -21,9 +23,11 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
         dest.writeString(username);
         dest.writeString(avatarUrl);
         dest.writeString(typeUser);
+        dest.writeString(location);
     }
 
     @Override
