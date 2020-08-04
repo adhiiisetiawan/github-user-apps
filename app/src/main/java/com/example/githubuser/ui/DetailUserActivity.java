@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -49,7 +50,7 @@ public class DetailUserActivity extends AppCompatActivity {
     private CircleImageView imgAvatarProfile;
     Boolean statusFavorite = false;
     private FavoriteUserHelper favoriteUserHelper;
-    private String name, username, avatar, location;
+    private String name, username = "aaaa", avatar, location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,24 +82,36 @@ public class DetailUserActivity extends AppCompatActivity {
         imgAvatarProfile = findViewById(R.id.img_avatar_profile);
         progressBarProfile = findViewById(R.id.progressbar_profile);
 
+        //ini tempat set detail dari API
         setUserDetail();
 
         favoriteUserHelper = FavoriteUserHelper.getInstance(getApplicationContext());
         favoriteUserHelper.open();
 
+        //Saya coba Log disini nilai usernamenya null mengikuti varibale global,
+        //padahal maksud saya di get API dulu kemudian ambil nilai usernamenya
+        Log.d(DetailUserActivity.class.getSimpleName(),"Isi Username: " + username);
+
+        //nilai statusFavorite disini saya jadikan global karena tidak bisa dipasang disini
+//        Boolean statusFavorite = false;
         setStatusFavorite(statusFavorite);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 statusFavorite = !statusFavorite;
                 //insert code here
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(NAME, name);
-                contentValues.put(USERNAME, username);
-                contentValues.put(AVATAR_URL, avatar);
-                contentValues.put(LOCATION, location);
 
-                favoriteUserHelper.insert(contentValues);
+                //saya coba kasih seleksi jika usernamenya sudah ada di cursor,
+                // tp sepertinya kurang tepat karena ada di dalam onclick,
+                //harusnya diluar onclick, tapi ketika diluar onclick....
+                // tidak bisa mengambill nilai username, karena null
+                Cursor cursor = favoriteUserHelper.queryByUsername(username);
+                if (cursor != null){
+                    setStatusFavorite(true);
+                }
+                insertDatabase(name, username, avatar, location);
                 setStatusFavorite(statusFavorite);
             }
         });
@@ -163,6 +176,17 @@ public class DetailUserActivity extends AppCompatActivity {
         });
     }
 
+    private void insertDatabase(String name, String username, String avatar, String location){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(NAME, name);
+        contentValues.put(USERNAME, username);
+        contentValues.put(AVATAR_URL, avatar);
+        contentValues.put(LOCATION, location);
+
+        favoriteUserHelper.insert(contentValues);
+
+    }
+
     private void setStatusFavorite(Boolean statusFavorite){
         if (statusFavorite){
             fab.setImageResource(R.drawable.ic_baseline_favorite_24);
@@ -192,5 +216,11 @@ public class DetailUserActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        favoriteUserHelper.close();
     }
 }
