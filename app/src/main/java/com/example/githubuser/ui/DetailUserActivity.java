@@ -21,6 +21,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.githubuser.BuildConfig;
 import com.example.githubuser.R;
 import com.example.githubuser.adapter.SectionsPagerAdapter;
+import com.example.githubuser.adapter.UserFavoriteAdapter;
 import com.example.githubuser.database.FavoriteUserHelper;
 import com.example.githubuser.model.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -53,6 +54,7 @@ public class DetailUserActivity extends AppCompatActivity {
     Boolean statusFavorite = false;
     private FavoriteUserHelper favoriteUserHelper;
     private static String name, username, avatar, location;
+    private UserFavoriteAdapter userFavoriteAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,20 +220,9 @@ public class DetailUserActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        switch (item.getItemId()){
-            case android.R.id.home:
-                finish();
-                break;
-        }
+        if (item.getItemId() == android.R.id.home)
+            finish();
         return super.onOptionsItemSelected(item);
     }
 

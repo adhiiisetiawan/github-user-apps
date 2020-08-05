@@ -118,9 +118,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.settings){
-            Intent intentSettings = new Intent(Settings.ACTION_LOCALE_SETTINGS);
-            startActivity(intentSettings);
+        switch (item.getItemId()){
+            case R.id.settings:
+                Intent intentSettings = new Intent(Settings.ACTION_LOCALE_SETTINGS);
+                startActivity(intentSettings);
+                break;
+            case R.id.favorite:
+                Intent intent = new Intent(this, FavoriteActivity.class);
+                startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

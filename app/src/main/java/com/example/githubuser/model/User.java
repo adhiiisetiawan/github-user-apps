@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class User implements Parcelable {
+    private int id;
     private String name;
     private String username;
     private String avatarUrl;
@@ -53,6 +54,21 @@ public class User implements Parcelable {
         this.avatarUrl = avatarUrl;
         this.typeUser = typeUser;
         this.location = location;
+    }
+
+    public User(int id, String name, String username, String avatarUrl) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.avatarUrl = avatarUrl;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {
