@@ -31,15 +31,11 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private MainViewModel mainViewModel;
     private TextInputEditText txtSearch;
-    private FavoriteUserHelper favoriteUserHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        favoriteUserHelper = FavoriteUserHelper.getInstance(getApplicationContext());
-        favoriteUserHelper.open();
 
         txtSearch = findViewById(R.id.edt_text_search);
         txtSearch.addTextChangedListener(new TextWatcher() {
@@ -128,11 +124,5 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        favoriteUserHelper.close();
     }
 }

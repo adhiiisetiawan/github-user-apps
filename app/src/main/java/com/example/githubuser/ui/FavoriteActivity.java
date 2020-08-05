@@ -1,6 +1,7 @@
 package com.example.githubuser.ui;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,6 +45,7 @@ public class FavoriteActivity extends AppCompatActivity implements LoadUserFavor
         rvUser.setLayoutManager(new LinearLayoutManager(this));
         rvUser.setHasFixedSize(true);
         userFavoriteAdapter = new UserFavoriteAdapter(this);
+        userFavoriteAdapter.notifyDataSetChanged();
         rvUser.setAdapter(userFavoriteAdapter);
 
         favoriteUserHelper = FavoriteUserHelper.getInstance(getApplicationContext());
@@ -59,7 +61,6 @@ public class FavoriteActivity extends AppCompatActivity implements LoadUserFavor
                 startActivity(intent);
             }
         });
-//        userFavoriteAdapter.removeItem();
     }
 
     @Override
@@ -116,6 +117,14 @@ public class FavoriteActivity extends AppCompatActivity implements LoadUserFavor
         if (item.getItemId() == android.R.id.home)
             finish();
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        favoriteUserHelper = FavoriteUserHelper.getInstance(getApplicationContext());
+        favoriteUserHelper.open();
+        new LoadUserFavoriteAsync(favoriteUserHelper, this).execute();
     }
 
     @Override

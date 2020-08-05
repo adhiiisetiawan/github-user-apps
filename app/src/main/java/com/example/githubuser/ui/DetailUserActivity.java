@@ -8,8 +8,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -28,11 +26,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-
 import cz.msebera.android.httpclient.Header;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -54,7 +48,7 @@ public class DetailUserActivity extends AppCompatActivity {
     Boolean statusFavorite = false;
     private FavoriteUserHelper favoriteUserHelper;
     private static String name, username, avatar, location;
-    private UserFavoriteAdapter userFavoriteAdapter;
+//    private UserFavoriteAdapter userFavoriteAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,41 +80,21 @@ public class DetailUserActivity extends AppCompatActivity {
         imgAvatarProfile = findViewById(R.id.img_avatar_profile);
         progressBarProfile = findViewById(R.id.progressbar_profile);
 
-        //ini tempat set detail dari API
         setUserDetail();
-//        User userCek = new User();
+
         favoriteUserHelper = FavoriteUserHelper.getInstance(getApplicationContext());
         favoriteUserHelper.open();
 
-        //Saya coba Log disini nilai usernamenya null mengikuti varibale global,
-        //padahal maksud saya di get API dulu kemudian ambil nilai usernamenya
-        Log.d(DetailUserActivity.class.getSimpleName(),"Isi Username: " + mUser.getUsername());
-
-        //nilai statusFavorite disini saya jadikan global karena tidak bisa dipasang disini
-//        Boolean statusFavorite = false;
-
-
-
-//        Log.d(DetailUserActivity.class.getSimpleName(), "Isi Cursor " + cursor);
         Cursor cursor = favoriteUserHelper.queryByUsername(mUser.getUsername());
         if (cursor.getCount() >= 1){
             setStatusFavorite(true);
-//            Toast.makeText(this, "Favorite", Toast.LENGTH_SHORT).show();
         } else {
             setStatusFavorite(false);
         }
-//        setStatusFavorite(statusFavorite);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 statusFavorite = !statusFavorite;
-                //insert code here
-
-                //saya coba kasih seleksi jika usernamenya sudah ada di cursor,
-                // tp sepertinya kurang tepat karena ada di dalam onclick,
-                //harusnya diluar onclick, tapi ketika diluar onclick....
-                // tidak bisa mengambill nilai username, karena null
-//                Log.d(DetailUserActivity.class.getSimpleName(), "Onclick FAB: "+username +" " + location);
                 Cursor cursor = favoriteUserHelper.queryByUsername(username);
                 if (cursor.getCount() < 1){
                     insertDatabase(name, username, avatar, location);
@@ -128,6 +102,7 @@ public class DetailUserActivity extends AppCompatActivity {
                     setStatusFavorite(true);
                 }else if (cursor.getCount() >=1){
                     favoriteUserHelper.deleteById(username);
+//                    userFavoriteAdapter.removeItem(cursor.getPosition());
                     Toast.makeText(DetailUserActivity.this, "Delete", Toast.LENGTH_SHORT).show();
                     setStatusFavorite(false);
                 }
