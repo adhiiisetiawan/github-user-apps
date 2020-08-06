@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,7 +49,6 @@ public class DetailUserActivity extends AppCompatActivity {
     Boolean statusFavorite = false;
     private FavoriteUserHelper favoriteUserHelper;
     private static String name, username, avatar, location;
-//    private UserFavoriteAdapter userFavoriteAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,8 +196,11 @@ public class DetailUserActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home)
+        if (item.getItemId() == android.R.id.home){
+            Intent intent = new Intent(DetailUserActivity.this, MainActivity.class);
+            startActivity(intent);
             finish();
+        }
         return super.onOptionsItemSelected(item);
     }
 

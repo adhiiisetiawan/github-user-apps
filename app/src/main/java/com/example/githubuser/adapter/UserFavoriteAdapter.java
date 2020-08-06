@@ -43,17 +43,6 @@ public class UserFavoriteAdapter extends RecyclerView.Adapter<UserFavoriteAdapte
         notifyDataSetChanged();
     }
 
-    public void addItem(User user){
-        this.listUser.add(user);
-        notifyItemInserted(listUser.size() - 1);
-    }
-
-    public void removeItem(int position){
-        this.listUser.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, listUser.size());
-    }
-
     @NonNull
     @Override
     public UserFavoriteAdapter.UserFavoriteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
