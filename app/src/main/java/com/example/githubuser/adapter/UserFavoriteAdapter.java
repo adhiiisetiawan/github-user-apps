@@ -36,10 +36,7 @@ public class UserFavoriteAdapter extends RecyclerView.Adapter<UserFavoriteAdapte
     }
 
     public void setListUser(ArrayList<User> listUser){
-        if (listUser.size() > 0){
-            this.listUser.clear();
-        }
-        this.listUser.addAll(listUser);
+        this.listUser = listUser;
         notifyDataSetChanged();
     }
 
