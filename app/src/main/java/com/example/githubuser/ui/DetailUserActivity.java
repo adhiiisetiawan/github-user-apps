@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,7 +19,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.githubuser.BuildConfig;
 import com.example.githubuser.R;
 import com.example.githubuser.adapter.SectionsPagerAdapter;
-import com.example.githubuser.adapter.UserFavoriteAdapter;
 import com.example.githubuser.database.FavoriteUserHelper;
 import com.example.githubuser.model.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -63,8 +61,6 @@ public class DetailUserActivity extends AppCompatActivity {
 
         fab = findViewById(R.id.floating_action);
 
-
-
         User mUser = getIntent().getParcelableExtra(EXTRA_USERNAME);
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this,getSupportFragmentManager());
@@ -102,7 +98,6 @@ public class DetailUserActivity extends AppCompatActivity {
                     setStatusFavorite(true);
                 }else if (cursor.getCount() >=1){
                     favoriteUserHelper.deleteById(username);
-//                    userFavoriteAdapter.removeItem(cursor.getPosition());
                     Toast.makeText(DetailUserActivity.this, "Delete", Toast.LENGTH_SHORT).show();
                     setStatusFavorite(false);
                 }
@@ -196,11 +191,8 @@ public class DetailUserActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home){
-//            Intent intent = new Intent(DetailUserActivity.this, MainActivity.class);
-//            startActivity(intent);
+        if (item.getItemId() == android.R.id.home)
             finish();
-        }
         return super.onOptionsItemSelected(item);
     }
 
