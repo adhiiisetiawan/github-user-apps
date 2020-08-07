@@ -1,4 +1,4 @@
-package com.example.githubuser.ui;
+package com.example.githubuser.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,8 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.githubuser.R;
 import com.example.githubuser.adapter.UserAdapter;
-import com.example.githubuser.database.FavoriteUserHelper;
 import com.example.githubuser.model.User;
+import com.example.githubuser.ui.detail_user.DetailUserActivity;
+import com.example.githubuser.ui.favorite.FavoriteActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;

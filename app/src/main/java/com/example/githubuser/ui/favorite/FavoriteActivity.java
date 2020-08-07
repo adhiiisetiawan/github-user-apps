@@ -1,7 +1,6 @@
-package com.example.githubuser.ui;
+package com.example.githubuser.ui.favorite;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +19,7 @@ import com.example.githubuser.adapter.UserFavoriteAdapter;
 import com.example.githubuser.database.FavoriteUserHelper;
 import com.example.githubuser.helper.MappingHelper;
 import com.example.githubuser.model.User;
+import com.example.githubuser.ui.detail_user.DetailUserActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

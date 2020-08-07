@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.example.githubuser.BuildConfig;
-import com.example.githubuser.ui.DetailUserActivity;
+import com.example.githubuser.ui.detail_user.DetailUserActivity;
 import com.example.githubuser.R;
 import com.example.githubuser.adapter.UserAdapter;
 import com.example.githubuser.model.User;

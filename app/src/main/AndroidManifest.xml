@@ -11,9 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.FavoriteActivity"></activity>
-        <activity android:name=".ui.DetailUserActivity" />
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.favorite.FavoriteActivity"></activity>
+        <activity android:name=".ui.detail_user.DetailUserActivity" />
+        <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
