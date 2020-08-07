@@ -75,8 +75,8 @@ public class User implements Parcelable {
         return username;
     }
 
-    public void setUsername(String usernam) {
-        this.username = usernam;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getAvatarUrl() {
