@@ -23,6 +23,7 @@ import com.example.githubuser.adapter.UserAdapter;
 import com.example.githubuser.model.User;
 import com.example.githubuser.ui.detail_user.DetailUserActivity;
 import com.example.githubuser.ui.favorite.FavoriteActivity;
+import com.example.githubuser.ui.setting.SettingActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
@@ -117,12 +118,14 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.settings:
-                Intent intentSettings = new Intent(Settings.ACTION_LOCALE_SETTINGS);
-                startActivity(intentSettings);
+//                Intent intentSettings = new Intent(Settings.ACTION_LOCALE_SETTINGS);
+//                startActivity(intentSettings);
+                Intent intentSetting = new Intent(this, SettingActivity.class);
+                startActivity(intentSetting);
                 break;
             case R.id.favorite:
-                Intent intent = new Intent(this, FavoriteActivity.class);
-                startActivity(intent);
+                Intent intentFavorite = new Intent(this, FavoriteActivity.class);
+                startActivity(intentFavorite);
         }
         return super.onOptionsItemSelected(item);
     }
