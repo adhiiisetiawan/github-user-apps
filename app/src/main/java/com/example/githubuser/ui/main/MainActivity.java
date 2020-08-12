@@ -118,8 +118,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.settings:
-//                Intent intentSettings = new Intent(Settings.ACTION_LOCALE_SETTINGS);
-//                startActivity(intentSettings);
                 Intent intentSetting = new Intent(this, SettingActivity.class);
                 startActivity(intentSetting);
                 break;

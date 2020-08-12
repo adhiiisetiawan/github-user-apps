@@ -3,10 +3,13 @@ package com.example.githubuser.ui.setting;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.githubuser.R;
+import com.example.githubuser.receiver.AlarmReceiver;
 
 public class SettingActivity extends AppCompatActivity {
 

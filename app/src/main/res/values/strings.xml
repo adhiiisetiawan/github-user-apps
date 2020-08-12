@@ -14,4 +14,6 @@
     <string name="set_reminder">Set Daily Reminder at 9.00 AM</string>
     <string name="key_language">key_language</string>
     <string name="key_reminder">key_reminder</string>
+    <string name="github_user_app">Github User</string>
+    <string name="message_notification">Open apps now, and find your partner in github</string>
 </resources>

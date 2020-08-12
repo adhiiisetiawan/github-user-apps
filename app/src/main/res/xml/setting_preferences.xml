@@ -10,9 +10,8 @@
         android:selectAllOnFocus="true"
         android:icon="@drawable/ic_baseline_language_24" />
 
-    <SwitchPreferenceCompat
+    <SwitchPreference
         android:key="@string/key_reminder"
         android:title="@string/set_reminder"
-        android:iconSpaceReserved="false"
         android:icon="@drawable/ic_baseline_notifications_active_24"/>
 </PreferenceScreen>
