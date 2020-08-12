@@ -8,8 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import static android.provider.BaseColumns._ID;
+import static com.example.githubuser.database.DatabaseContract.FavoriteColumns.TABLE_NAME;
 import static com.example.githubuser.database.DatabaseContract.FavoriteColumns.USERNAME;
-import static com.example.githubuser.database.DatabaseContract.TABLE_NAME;
 
 public class FavoriteUserHelper {
     private static final String DATABASE_TABLE = TABLE_NAME;

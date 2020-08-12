@@ -5,10 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -16,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.githubuser.R;
 import com.example.githubuser.adapter.UserFavoriteAdapter;
+import com.example.githubuser.database.DatabaseContract;
 import com.example.githubuser.database.FavoriteUserHelper;
 import com.example.githubuser.helper.MappingHelper;
 import com.example.githubuser.model.User;
@@ -48,10 +53,17 @@ public class FavoriteActivity extends AppCompatActivity implements LoadUserFavor
         userFavoriteAdapter.notifyDataSetChanged();
         rvUser.setAdapter(userFavoriteAdapter);
 
-        favoriteUserHelper = FavoriteUserHelper.getInstance(getApplicationContext());
-        favoriteUserHelper.open();
+//        favoriteUserHelper = FavoriteUserHelper.getInstance(getApplicationContext());
+//        favoriteUserHelper.open();
 
-        new LoadUserFavoriteAsync(favoriteUserHelper, this).execute();
+        HandlerThread handlerThread = new HandlerThread("DataObserver");
+        handlerThread.start();
+        Handler handler = new Handler(handlerThread.getLooper());
+
+        DataObserver observer = new DataObserver(handler, this);
+        getContentResolver().registerContentObserver(DatabaseContract.FavoriteColumns.CONTENT_URI, true, observer);
+
+        new LoadUserFavoriteAsync(this, this).execute();
 
         userFavoriteAdapter.setOnItemFavoriteClickCallback(new UserFavoriteAdapter.onItemFavoriteClickCallback() {
             @Override
@@ -85,11 +97,11 @@ public class FavoriteActivity extends AppCompatActivity implements LoadUserFavor
     }
 
     private static class LoadUserFavoriteAsync extends AsyncTask<Void, Void, ArrayList<User>>{
-        private final WeakReference<FavoriteUserHelper> weakReferenceUserFavorite;
+        private final WeakReference<Context> weakContext;
         private final WeakReference<LoadUserFavoriteCallback> weakReferenceCallback;
 
-        private LoadUserFavoriteAsync(FavoriteUserHelper favoriteUserHelper, LoadUserFavoriteCallback callback){
-            weakReferenceUserFavorite = new WeakReference<>(favoriteUserHelper);
+        private LoadUserFavoriteAsync(Context context, LoadUserFavoriteCallback callback){
+            weakContext = new WeakReference<>(context);
             weakReferenceCallback = new WeakReference<>(callback);
         }
 
@@ -101,8 +113,9 @@ public class FavoriteActivity extends AppCompatActivity implements LoadUserFavor
 
         @Override
         protected ArrayList<User> doInBackground(Void... voids) {
-            Cursor cursor = weakReferenceUserFavorite.get().queryAll();
-            return MappingHelper.mapCursorToArrayList(cursor);
+            Context context = weakContext.get();
+            Cursor dataCursor = context.getContentResolver().query(DatabaseContract.FavoriteColumns.CONTENT_URI, null, null, null, null);
+            return MappingHelper.mapCursorToArrayList(dataCursor);
         }
 
         @Override
@@ -119,12 +132,27 @@ public class FavoriteActivity extends AppCompatActivity implements LoadUserFavor
         return super.onOptionsItemSelected(item);
     }
 
+    public static class DataObserver extends ContentObserver{
+        final Context context;
+
+        public DataObserver(Handler handler, Context context){
+            super(handler);
+            this.context = context;
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            new LoadUserFavoriteAsync(context, (LoadUserFavoriteCallback) context).execute();
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         favoriteUserHelper = FavoriteUserHelper.getInstance(getApplicationContext());
         favoriteUserHelper.open();
-        new LoadUserFavoriteAsync(favoriteUserHelper, this).execute();
+        new LoadUserFavoriteAsync(this, this).execute();
     }
 
     @Override

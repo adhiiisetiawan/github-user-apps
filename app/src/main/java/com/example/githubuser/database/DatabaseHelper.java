@@ -14,7 +14,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + " %s TEXT NOT NULL UNIQUE,"
                 + " %s TEXT NOT NULL,"
                 + " %s TEXT NOT NULL)",
-            DatabaseContract.TABLE_NAME,
+            DatabaseContract.FavoriteColumns.TABLE_NAME,
             DatabaseContract.FavoriteColumns._ID,
             DatabaseContract.FavoriteColumns.NAME,
             DatabaseContract.FavoriteColumns.USERNAME,
@@ -33,7 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("DROP TABLE IF EXISTS " + DatabaseContract.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + DatabaseContract.FavoriteColumns.TABLE_NAME);
         onCreate(db);
     }
 }

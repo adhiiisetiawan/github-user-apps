@@ -7,8 +7,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -19,8 +23,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.githubuser.R;
 import com.example.githubuser.adapter.SectionsPagerAdapter;
+import com.example.githubuser.database.DatabaseContract;
 import com.example.githubuser.database.FavoriteUserHelper;
 import com.example.githubuser.model.User;
+import com.example.githubuser.ui.favorite.FavoriteActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
@@ -120,9 +126,17 @@ public class DetailUserActivity extends AppCompatActivity {
             }
         });
 
-        favoriteUserHelper = FavoriteUserHelper.getInstance(getApplicationContext());
-        favoriteUserHelper.open();
+//        favoriteUserHelper = FavoriteUserHelper.getInstance(getApplicationContext());
+//        favoriteUserHelper.open();
 
+        HandlerThread handlerThread = new HandlerThread("DataObserver");
+        handlerThread.start();
+        Handler handler = new Handler(handlerThread.getLooper());
+
+        FavoriteActivity.DataObserver observer = new FavoriteActivity.DataObserver(handler, this);
+        getContentResolver().registerContentObserver(DatabaseContract.FavoriteColumns.CONTENT_URI, true, observer);
+
+//ini diganti nanti
         Cursor cursor = favoriteUserHelper.queryByUsername(mUser.getUsername());
         if (cursor.getCount() >= 1){
             setStatusFavorite(true);
@@ -180,6 +194,22 @@ public class DetailUserActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
     }
+
+//    public static class DataObserver extends ContentObserver {
+//        final Context context;
+//
+//        public DataObserver(Handler handler, Context context){
+//            super(handler);
+//            this.context = context;
+//        }
+//
+//        @Override
+//        public void onChange(boolean selfChange) {
+//            super.onChange(selfChange);
+//            new LoadUserFavoriteAsync(context, (LoadUserFavoriteCallback) context).execute();
+//        }
+//    }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

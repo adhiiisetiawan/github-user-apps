@@ -20,4 +20,14 @@ public class MappingHelper {
         }
         return userArrayList;
     }
+
+    public static User mapCursorToObject(Cursor userCursor){
+        userCursor.moveToFirst();
+        int id = userCursor.getInt(userCursor.getColumnIndexOrThrow(DatabaseContract.FavoriteColumns._ID));
+        String name = userCursor.getString(userCursor.getColumnIndexOrThrow(DatabaseContract.FavoriteColumns.NAME));
+        String username = userCursor.getString(userCursor.getColumnIndexOrThrow(DatabaseContract.FavoriteColumns.USERNAME));
+        String avatar = userCursor.getString(userCursor.getColumnIndexOrThrow(DatabaseContract.FavoriteColumns.AVATAR_URL));
+
+        return new User(id, name, username, avatar);
+    }
 }
