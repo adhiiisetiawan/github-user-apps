@@ -73,7 +73,8 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setContentText(context.getString(R.string.message_notification))
                 .setColor(ContextCompat.getColor(context, android.R.color.transparent))
                 .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
-                .setSound(alarmSound);
+                .setSound(alarmSound)
+                .setAutoCancel(true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
