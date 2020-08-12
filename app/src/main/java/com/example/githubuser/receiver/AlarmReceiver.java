@@ -21,15 +21,10 @@ import com.example.githubuser.ui.main.MainActivity;
 import java.util.Calendar;
 
 public class AlarmReceiver extends BroadcastReceiver {
-//    public static final String EXTRA_MESSAGE = "extra_message";
-//    public static final String EXTRA_TYPE = "extra_type";
-    public static final String TYPE_REPEATING = "RepeatingAlarm";
     private final int ID_REPEATING = 101;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-//        String type = intent.getStringExtra(EXTRA_TYPE);
-//        String message = intent.getStringExtra(EXTRA_MESSAGE);
 
         showAlarmNotification(context);
     }
@@ -69,6 +64,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setContentIntent(pendingIntent)
