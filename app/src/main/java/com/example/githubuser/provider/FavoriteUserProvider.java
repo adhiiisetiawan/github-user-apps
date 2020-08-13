@@ -15,6 +15,7 @@ import static com.example.githubuser.database.DatabaseContract.FavoriteColumns.T
 public class FavoriteUserProvider extends ContentProvider {
     private static final int FAVORITE_USER = 1;
     private static final int FAVORITE_USER_ID = 2;
+    private static final String FAVORITE_BY_USERNAME = "fav";
     private FavoriteUserHelper favoriteUserHelper;
 
     private static final UriMatcher mUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -24,6 +25,10 @@ public class FavoriteUserProvider extends ContentProvider {
 
         mUriMatcher.addURI(AUTHORITY,
                 TABLE_NAME + "/#",
+                FAVORITE_USER_ID);
+
+        mUriMatcher.addURI(AUTHORITY,
+                TABLE_NAME + "/*",
                 FAVORITE_USER_ID);
     }
 
@@ -57,9 +62,7 @@ public class FavoriteUserProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        // TODO: Implement this to handle requests for the MIME type of the data
-        // at the given URI.
-        throw new UnsupportedOperationException("Not yet implemented");
+        return null;
     }
 
     @Override
@@ -99,4 +102,6 @@ public class FavoriteUserProvider extends ContentProvider {
         getContext().getContentResolver().notifyChange(CONTENT_URI, null);
         return deleted;
     }
+
+
 }

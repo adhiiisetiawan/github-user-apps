@@ -3,8 +3,6 @@ package com.example.githubuser.database;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import static com.example.githubuser.database.DatabaseContract.FavoriteColumns.TABLE_NAME;
-
 public class DatabaseContract {
     public static final String AUTHORITY = "com.example.githubuser";
     private static final String SCHEME = "content";

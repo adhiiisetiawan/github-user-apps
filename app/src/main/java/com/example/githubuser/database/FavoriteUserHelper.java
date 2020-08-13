@@ -37,13 +37,6 @@ public class FavoriteUserHelper {
         database = databaseHelper.getWritableDatabase();
     }
 
-    public void close(){
-        databaseHelper.close();
-        if (database.isOpen()){
-            database.close();
-        }
-    }
-
     public Cursor queryAll(){
         return database.query(
                 DATABASE_TABLE,
@@ -73,5 +66,12 @@ public class FavoriteUserHelper {
 
     public int deleteById(String id){
         return database.delete(DATABASE_TABLE, USERNAME + " = ?", new String[]{id});
+    }
+
+    public void close(){
+        databaseHelper.close();
+        if (database.isOpen()){
+            database.close();
+        }
     }
 }

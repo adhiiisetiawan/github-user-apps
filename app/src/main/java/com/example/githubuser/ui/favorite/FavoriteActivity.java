@@ -92,7 +92,7 @@ public class FavoriteActivity extends AppCompatActivity implements LoadUserFavor
             userFavoriteAdapter.setListUser(users);
         } else {
             userFavoriteAdapter.setListUser(new ArrayList<User>());
-            Toast.makeText(this, "No Data", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "No Data", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -114,7 +114,12 @@ public class FavoriteActivity extends AppCompatActivity implements LoadUserFavor
         @Override
         protected ArrayList<User> doInBackground(Void... voids) {
             Context context = weakContext.get();
-            Cursor dataCursor = context.getContentResolver().query(DatabaseContract.FavoriteColumns.CONTENT_URI, null, null, null, null);
+            Cursor dataCursor = context.getContentResolver()
+                    .query(DatabaseContract.FavoriteColumns.CONTENT_URI,
+                    null,
+                    null,
+                    null,
+                    null);
             return MappingHelper.mapCursorToArrayList(dataCursor);
         }
 
@@ -140,6 +145,7 @@ public class FavoriteActivity extends AppCompatActivity implements LoadUserFavor
             this.context = context;
         }
 
+        //rubah onchange dg gambar tanpa toast
         @Override
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
@@ -147,23 +153,25 @@ public class FavoriteActivity extends AppCompatActivity implements LoadUserFavor
         }
     }
 
+    //Hapus on resume
     @Override
     protected void onResume() {
         super.onResume();
-        favoriteUserHelper = FavoriteUserHelper.getInstance(getApplicationContext());
-        favoriteUserHelper.open();
-        new LoadUserFavoriteAsync(this, this).execute();
+//        HandlerThread handlerThread = new HandlerThread("DataObserver");
+//        handlerThread.start();
+//        Handler handler = new Handler(handlerThread.getLooper());
+//
+//        DataObserver observer = new DataObserver(handler, this);
+//        getContentResolver().registerContentObserver(DatabaseContract.FavoriteColumns.CONTENT_URI, true, observer);
+
+//        favoriteUserHelper = FavoriteUserHelper.getInstance(getApplicationContext());
+//        favoriteUserHelper.open();
+//        new LoadUserFavoriteAsync(this, this).execute();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        favoriteUserHelper.close();
     }
 }
 

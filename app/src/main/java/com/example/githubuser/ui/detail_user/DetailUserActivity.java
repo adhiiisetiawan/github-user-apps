@@ -10,9 +10,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -25,14 +28,19 @@ import com.example.githubuser.R;
 import com.example.githubuser.adapter.SectionsPagerAdapter;
 import com.example.githubuser.database.DatabaseContract;
 import com.example.githubuser.database.FavoriteUserHelper;
+import com.example.githubuser.helper.MappingHelper;
 import com.example.githubuser.model.User;
 import com.example.githubuser.ui.favorite.FavoriteActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.example.githubuser.database.DatabaseContract.FavoriteColumns.AVATAR_URL;
+import static com.example.githubuser.database.DatabaseContract.FavoriteColumns.CONTENT_URI;
 import static com.example.githubuser.database.DatabaseContract.FavoriteColumns.LOCATION;
 import static com.example.githubuser.database.DatabaseContract.FavoriteColumns.NAME;
 import static com.example.githubuser.database.DatabaseContract.FavoriteColumns.USERNAME;
@@ -42,6 +50,7 @@ public class DetailUserActivity extends AppCompatActivity {
 
     private ProgressBar progressBarProfile;
     private FloatingActionButton fab;
+    private User mUser;
 
     private TextView tvName;
     private TextView tvUsernameProfile;
@@ -51,6 +60,8 @@ public class DetailUserActivity extends AppCompatActivity {
     private FavoriteUserHelper favoriteUserHelper;
 
     private DetailUserViewModel detailUserViewModel;
+    private Uri uriByUsername;
+    private Uri uriById;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +76,7 @@ public class DetailUserActivity extends AppCompatActivity {
 
         fab = findViewById(R.id.floating_action);
 
-        User mUser = getIntent().getParcelableExtra(EXTRA_USERNAME);
+        mUser = getIntent().getParcelableExtra(EXTRA_USERNAME);
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this,getSupportFragmentManager());
         sectionsPagerAdapter.username = mUser.getUsername();
@@ -129,35 +140,87 @@ public class DetailUserActivity extends AppCompatActivity {
 //        favoriteUserHelper = FavoriteUserHelper.getInstance(getApplicationContext());
 //        favoriteUserHelper.open();
 
-        HandlerThread handlerThread = new HandlerThread("DataObserver");
-        handlerThread.start();
-        Handler handler = new Handler(handlerThread.getLooper());
+//        HandlerThread handlerThread = new HandlerThread("DataObserver");
+//        handlerThread.start();
+//        Handler handler = new Handler(handlerThread.getLooper());
 
-        FavoriteActivity.DataObserver observer = new FavoriteActivity.DataObserver(handler, this);
-        getContentResolver().registerContentObserver(DatabaseContract.FavoriteColumns.CONTENT_URI, true, observer);
+//        DataObserver observer = new DataObserver(handler, this);
+//        getContentResolver().registerContentObserver(DatabaseContract.FavoriteColumns.CONTENT_URI, true, observer);
 
-//ini diganti nanti
-        Cursor cursor = favoriteUserHelper.queryByUsername(mUser.getUsername());
-        if (cursor.getCount() >= 1){
-            setStatusFavorite(true);
-        } else {
-            setStatusFavorite(false);
+        uriByUsername = Uri.parse(CONTENT_URI + "/" + mUser.getUsername());
+        uriById = Uri.parse(CONTENT_URI + "/" + mUser.getId());
+//        if (uriByUsername != null){
+        Log.d(DetailUserActivity.class.getSimpleName(), "Test uri: "+uriById);
+        Log.d(DetailUserActivity.class.getSimpleName(), "Test uri: "+uriByUsername);
+        Cursor cursor = getContentResolver().query(uriById,
+                null,
+                null,
+                null,
+                null);
+        Cursor cursorUsername = getContentResolver().query(uriByUsername, null, null, null, null);
+        Log.d(DetailUserActivity.class.getSimpleName(), "Cursor sebelum klik "+ cursor);
+        Log.d(DetailUserActivity.class.getSimpleName(), "Cursor username sebelum klik "+ cursorUsername);
+        if (cursorUsername != null){
+            mUser = MappingHelper.mapCursorToObject(cursorUsername);
+            if (cursorUsername.getCount() >= 1){
+                statusFavorite = true;
+                setStatusFavorite(statusFavorite);
+            } else {
+                statusFavorite = false;
+                setStatusFavorite(statusFavorite);
+            }
+//            setStatusFavorite(statusFavorite);
+            cursor.close();
         }
+//        if (cursor.getCount() >= 1){
+//            statusFavorite = true;
+//            setStatusFavorite(statusFavorite);
+//        } else {
+//            statusFavorite = false;
+//            setStatusFavorite(statusFavorite);
+//        }
+
+
+
+
+//        Cursor cursor = favoriteUserHelper.queryByUsername(mUser.getUsername());
+//        if (cursor.getCount() >= 1){
+//            statusFavorite = true;
+//            setStatusFavorite(statusFavorite);
+//        } else {
+//            statusFavorite = false;
+//            setStatusFavorite(statusFavorite);
+//        }
+//        cursor.close();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 statusFavorite = !statusFavorite;
-                Cursor cursor = favoriteUserHelper.queryByUsername(detailUserViewModel.getUsernames().getValue());
-                if (cursor.getCount() < 1){
+//                Cursor cursor = favoriteUserHelper.queryByUsername(detailUserViewModel.getUsernames().getValue());
+                Cursor cursorClick = getContentResolver().query(uriByUsername, null, null, null, null);
+                Log.d(DetailUserActivity.class.getSimpleName(), "Cursor click: "+cursorClick);
+                if (cursorClick.getCount() < 1){
                     insertDatabase(detailUserViewModel.getName().getValue(), detailUserViewModel.getUsernames().getValue(),
                             detailUserViewModel.getAvatar().getValue(), detailUserViewModel.getLocation().getValue());
                     Toast.makeText(DetailUserActivity.this, "Favorite", Toast.LENGTH_SHORT).show();
-                    setStatusFavorite(true);
-                }else if (cursor.getCount() >=1){
-                    favoriteUserHelper.deleteById(detailUserViewModel.getUsernames().getValue());
+                    statusFavorite = true;
+                    setStatusFavorite(statusFavorite);
+                }else if (cursorClick.getCount() >=1){
+//                    favoriteUserHelper.deleteById(detailUserViewModel.getUsernames().getValue());
+                    getContentResolver().delete(uriByUsername, null, null);
                     Toast.makeText(DetailUserActivity.this, "Delete", Toast.LENGTH_SHORT).show();
-                    setStatusFavorite(false);
+                    statusFavorite = false;
+                    setStatusFavorite(statusFavorite);
                 }
+//                Log.d(DetailUserActivity.class.getSimpleName(), "Test uri: "+uriByUsername);
+////
+//                Cursor cursor = getContentResolver().query(uriByUsername, null, null, null, null);
+//                Log.d(DetailUserActivity.class.getSimpleName(), "Cursor = "+ cursor);
+//                if (cursor != null){
+//
+//                    cursor.close();
+//                }
+//                setStatusFavorite(statusFavorite);
             }
         });
     }
@@ -177,7 +240,7 @@ public class DetailUserActivity extends AppCompatActivity {
         contentValues.put(AVATAR_URL, avatar);
         contentValues.put(LOCATION, location);
 
-        favoriteUserHelper.insert(contentValues);
+        getContentResolver().insert(CONTENT_URI, contentValues);
     }
 
     private boolean setStatusFavorite(Boolean statusFavorite){
@@ -189,6 +252,45 @@ public class DetailUserActivity extends AppCompatActivity {
 
         return statusFavorite;
     }
+
+//    @Override
+//    public void preExecute() {
+//
+//    }
+//
+//    @Override
+//    public void postExecute(ArrayList<User> users) {
+//
+//    }
+
+//    private static class LoadUserDetailAsync extends AsyncTask<Void, Void, ArrayList<User>> {
+//        private final WeakReference<Context> weakContext;
+//        private final WeakReference<LoadUserDetailCallback> weakReferenceCallback;
+//
+//        private LoadUserDetailAsync(Context context, LoadUserDetailCallback callback){
+//            weakContext = new WeakReference<>(context);
+//            weakReferenceCallback = new WeakReference<>(callback);
+//        }
+//
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            weakReferenceCallback.get().preExecute();
+//        }
+//
+//        @Override
+//        protected ArrayList<User> doInBackground(Void... voids) {
+//            Context context = weakContext.get();
+//            Cursor dataCursor = context.getContentResolver().query(DatabaseContract.FavoriteColumns.CONTENT_URI, null, null, null, null);
+//            return MappingHelper.mapCursorToArrayList(dataCursor);
+//        }
+//
+//        @Override
+//        protected void onPostExecute(ArrayList<User> users) {
+//            super.onPostExecute(users);
+//            weakReferenceCallback.get().postExecute(users);
+//        }
+//    }
 
     @Override
     public void onBackPressed() {
@@ -203,11 +305,11 @@ public class DetailUserActivity extends AppCompatActivity {
 //            this.context = context;
 //        }
 //
-//        @Override
-//        public void onChange(boolean selfChange) {
-//            super.onChange(selfChange);
-//            new LoadUserFavoriteAsync(context, (LoadUserFavoriteCallback) context).execute();
-//        }
+////        @Override
+////        public void onChange(boolean selfChange) {
+////            super.onChange(selfChange);
+////            new LoadUserDetailAsync(context, (LoadUserDetailCallback) context).execute();
+////        }
 //    }
 
 
@@ -218,9 +320,14 @@ public class DetailUserActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        favoriteUserHelper.close();
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        favoriteUserHelper.close();
+//    }
 }
+
+//interface LoadUserDetailCallback{
+//    void preExecute();
+//    void postExecute(ArrayList<User> users);
+//}
