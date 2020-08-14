@@ -86,7 +86,6 @@ public class FavoriteActivity extends AppCompatActivity implements LoadUserFavor
             userFavoriteAdapter.setListUser(users);
         } else {
             userFavoriteAdapter.setListUser(new ArrayList<User>());
-//            Toast.makeText(this, "No Data", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -139,7 +138,6 @@ public class FavoriteActivity extends AppCompatActivity implements LoadUserFavor
             this.context = context;
         }
 
-        //rubah onchange dg gambar tanpa toast
         @Override
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);

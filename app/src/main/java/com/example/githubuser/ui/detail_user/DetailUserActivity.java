@@ -131,7 +131,6 @@ public class DetailUserActivity extends AppCompatActivity {
                 null);
 
         if (cursorUsername != null){
-//            mUser = MappingHelper.mapCursorToObject(cursorUsername);
             if (cursorUsername.getCount() >= 1){
                 statusFavorite = true;
                 setStatusFavorite(statusFavorite);
@@ -139,7 +138,6 @@ public class DetailUserActivity extends AppCompatActivity {
                 statusFavorite = false;
                 setStatusFavorite(statusFavorite);
             }
-//            cursorUsername.close();
         }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
