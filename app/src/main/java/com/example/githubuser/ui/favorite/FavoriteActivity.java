@@ -33,7 +33,6 @@ public class FavoriteActivity extends AppCompatActivity implements LoadUserFavor
     private ProgressBar progressBar;
     private RecyclerView rvUser;
     private UserFavoriteAdapter userFavoriteAdapter;
-    private FavoriteUserHelper favoriteUserHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +51,6 @@ public class FavoriteActivity extends AppCompatActivity implements LoadUserFavor
         userFavoriteAdapter = new UserFavoriteAdapter(this);
         userFavoriteAdapter.notifyDataSetChanged();
         rvUser.setAdapter(userFavoriteAdapter);
-
-//        favoriteUserHelper = FavoriteUserHelper.getInstance(getApplicationContext());
-//        favoriteUserHelper.open();
 
         HandlerThread handlerThread = new HandlerThread("DataObserver");
         handlerThread.start();
@@ -151,22 +147,6 @@ public class FavoriteActivity extends AppCompatActivity implements LoadUserFavor
             super.onChange(selfChange);
             new LoadUserFavoriteAsync(context, (LoadUserFavoriteCallback) context).execute();
         }
-    }
-
-    //Hapus on resume
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        HandlerThread handlerThread = new HandlerThread("DataObserver");
-//        handlerThread.start();
-//        Handler handler = new Handler(handlerThread.getLooper());
-//
-//        DataObserver observer = new DataObserver(handler, this);
-//        getContentResolver().registerContentObserver(DatabaseContract.FavoriteColumns.CONTENT_URI, true, observer);
-
-//        favoriteUserHelper = FavoriteUserHelper.getInstance(getApplicationContext());
-//        favoriteUserHelper.open();
-//        new LoadUserFavoriteAsync(this, this).execute();
     }
 
     @Override

@@ -57,11 +57,9 @@ public class DetailUserActivity extends AppCompatActivity {
     private TextView tvLocation;
     private CircleImageView imgAvatarProfile;
     Boolean statusFavorite = false;
-    private FavoriteUserHelper favoriteUserHelper;
 
     private DetailUserViewModel detailUserViewModel;
     private Uri uriByUsername;
-    private Uri uriById;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,31 +135,15 @@ public class DetailUserActivity extends AppCompatActivity {
             }
         });
 
-//        favoriteUserHelper = FavoriteUserHelper.getInstance(getApplicationContext());
-//        favoriteUserHelper.open();
-
-//        HandlerThread handlerThread = new HandlerThread("DataObserver");
-//        handlerThread.start();
-//        Handler handler = new Handler(handlerThread.getLooper());
-
-//        DataObserver observer = new DataObserver(handler, this);
-//        getContentResolver().registerContentObserver(DatabaseContract.FavoriteColumns.CONTENT_URI, true, observer);
-
         uriByUsername = Uri.parse(CONTENT_URI + "/" + mUser.getUsername());
-        uriById = Uri.parse(CONTENT_URI + "/" + mUser.getId());
-//        if (uriByUsername != null){
-        Log.d(DetailUserActivity.class.getSimpleName(), "Test uri: "+uriById);
-        Log.d(DetailUserActivity.class.getSimpleName(), "Test uri: "+uriByUsername);
-        Cursor cursor = getContentResolver().query(uriById,
+        Cursor cursorUsername = getContentResolver().query(uriByUsername,
                 null,
                 null,
                 null,
                 null);
-        Cursor cursorUsername = getContentResolver().query(uriByUsername, null, null, null, null);
-        Log.d(DetailUserActivity.class.getSimpleName(), "Cursor sebelum klik "+ cursor);
-        Log.d(DetailUserActivity.class.getSimpleName(), "Cursor username sebelum klik "+ cursorUsername);
+
         if (cursorUsername != null){
-            mUser = MappingHelper.mapCursorToObject(cursorUsername);
+//            mUser = MappingHelper.mapCursorToObject(cursorUsername);
             if (cursorUsername.getCount() >= 1){
                 statusFavorite = true;
                 setStatusFavorite(statusFavorite);
@@ -169,34 +151,12 @@ public class DetailUserActivity extends AppCompatActivity {
                 statusFavorite = false;
                 setStatusFavorite(statusFavorite);
             }
-//            setStatusFavorite(statusFavorite);
-            cursor.close();
+//            cursorUsername.close();
         }
-//        if (cursor.getCount() >= 1){
-//            statusFavorite = true;
-//            setStatusFavorite(statusFavorite);
-//        } else {
-//            statusFavorite = false;
-//            setStatusFavorite(statusFavorite);
-//        }
-
-
-
-
-//        Cursor cursor = favoriteUserHelper.queryByUsername(mUser.getUsername());
-//        if (cursor.getCount() >= 1){
-//            statusFavorite = true;
-//            setStatusFavorite(statusFavorite);
-//        } else {
-//            statusFavorite = false;
-//            setStatusFavorite(statusFavorite);
-//        }
-//        cursor.close();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 statusFavorite = !statusFavorite;
-//                Cursor cursor = favoriteUserHelper.queryByUsername(detailUserViewModel.getUsernames().getValue());
                 Cursor cursorClick = getContentResolver().query(uriByUsername, null, null, null, null);
                 Log.d(DetailUserActivity.class.getSimpleName(), "Cursor click: "+cursorClick);
                 if (cursorClick.getCount() < 1){
@@ -206,21 +166,11 @@ public class DetailUserActivity extends AppCompatActivity {
                     statusFavorite = true;
                     setStatusFavorite(statusFavorite);
                 }else if (cursorClick.getCount() >=1){
-//                    favoriteUserHelper.deleteById(detailUserViewModel.getUsernames().getValue());
                     getContentResolver().delete(uriByUsername, null, null);
                     Toast.makeText(DetailUserActivity.this, "Delete", Toast.LENGTH_SHORT).show();
                     statusFavorite = false;
                     setStatusFavorite(statusFavorite);
                 }
-//                Log.d(DetailUserActivity.class.getSimpleName(), "Test uri: "+uriByUsername);
-////
-//                Cursor cursor = getContentResolver().query(uriByUsername, null, null, null, null);
-//                Log.d(DetailUserActivity.class.getSimpleName(), "Cursor = "+ cursor);
-//                if (cursor != null){
-//
-//                    cursor.close();
-//                }
-//                setStatusFavorite(statusFavorite);
             }
         });
     }
@@ -253,65 +203,10 @@ public class DetailUserActivity extends AppCompatActivity {
         return statusFavorite;
     }
 
-//    @Override
-//    public void preExecute() {
-//
-//    }
-//
-//    @Override
-//    public void postExecute(ArrayList<User> users) {
-//
-//    }
-
-//    private static class LoadUserDetailAsync extends AsyncTask<Void, Void, ArrayList<User>> {
-//        private final WeakReference<Context> weakContext;
-//        private final WeakReference<LoadUserDetailCallback> weakReferenceCallback;
-//
-//        private LoadUserDetailAsync(Context context, LoadUserDetailCallback callback){
-//            weakContext = new WeakReference<>(context);
-//            weakReferenceCallback = new WeakReference<>(callback);
-//        }
-//
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//            weakReferenceCallback.get().preExecute();
-//        }
-//
-//        @Override
-//        protected ArrayList<User> doInBackground(Void... voids) {
-//            Context context = weakContext.get();
-//            Cursor dataCursor = context.getContentResolver().query(DatabaseContract.FavoriteColumns.CONTENT_URI, null, null, null, null);
-//            return MappingHelper.mapCursorToArrayList(dataCursor);
-//        }
-//
-//        @Override
-//        protected void onPostExecute(ArrayList<User> users) {
-//            super.onPostExecute(users);
-//            weakReferenceCallback.get().postExecute(users);
-//        }
-//    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
-
-//    public static class DataObserver extends ContentObserver {
-//        final Context context;
-//
-//        public DataObserver(Handler handler, Context context){
-//            super(handler);
-//            this.context = context;
-//        }
-//
-////        @Override
-////        public void onChange(boolean selfChange) {
-////            super.onChange(selfChange);
-////            new LoadUserDetailAsync(context, (LoadUserDetailCallback) context).execute();
-////        }
-//    }
-
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -319,15 +214,4 @@ public class DetailUserActivity extends AppCompatActivity {
             finish();
         return super.onOptionsItemSelected(item);
     }
-
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        favoriteUserHelper.close();
-//    }
 }
-
-//interface LoadUserDetailCallback{
-//    void preExecute();
-//    void postExecute(ArrayList<User> users);
-//}

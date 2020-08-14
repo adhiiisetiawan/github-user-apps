@@ -15,7 +15,6 @@ import static com.example.githubuser.database.DatabaseContract.FavoriteColumns.T
 public class FavoriteUserProvider extends ContentProvider {
     private static final int FAVORITE_USER = 1;
     private static final int FAVORITE_USER_ID = 2;
-    private static final String FAVORITE_BY_USERNAME = "fav";
     private FavoriteUserHelper favoriteUserHelper;
 
     private static final UriMatcher mUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
