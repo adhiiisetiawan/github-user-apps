@@ -1,10 +1,5 @@
 package com.example.githubuser.ui.favorite;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.database.ContentObserver;
@@ -16,12 +11,15 @@ import android.os.HandlerThread;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.githubuser.R;
 import com.example.githubuser.adapter.UserFavoriteAdapter;
 import com.example.githubuser.database.DatabaseContract;
-import com.example.githubuser.database.FavoriteUserHelper;
 import com.example.githubuser.helper.MappingHelper;
 import com.example.githubuser.model.User;
 import com.example.githubuser.ui.detail_user.DetailUserActivity;

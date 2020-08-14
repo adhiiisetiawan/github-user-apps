@@ -1,20 +1,9 @@
 package com.example.githubuser.ui.detail_user;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.ContentValues;
-import android.content.Context;
-import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,20 +11,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager.widget.ViewPager;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.githubuser.R;
 import com.example.githubuser.adapter.SectionsPagerAdapter;
-import com.example.githubuser.database.DatabaseContract;
-import com.example.githubuser.database.FavoriteUserHelper;
-import com.example.githubuser.helper.MappingHelper;
 import com.example.githubuser.model.User;
-import com.example.githubuser.ui.favorite.FavoriteActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 

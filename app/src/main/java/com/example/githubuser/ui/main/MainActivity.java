@@ -2,7 +2,6 @@ package com.example.githubuser.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
