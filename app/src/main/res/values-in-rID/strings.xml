@@ -10,5 +10,11 @@
     <string name="search_hint">Masukkan Nama Pengguna</string>
     <string name="settings">Pengaturan</string>
     <string name="detail_user">Detail Pengguna</string>
-    <string name="favorite">Favori</string>
+    <string name="favorite">Favorit</string>
+    <string name="change_language">Ubah Bahasa</string>
+    <string name="set_reminder">Atur pengingat harian pukul 9.00 pagi</string>
+    <string name="key_language">key_language</string>
+    <string name="key_reminder">key_reminder</string>
+    <string name="github_user_app">Pengguna Github</string>
+    <string name="message_notification">Buka aplikasi sekarang, dan cari rekanmu di github</string>
 </resources>
