@@ -87,6 +87,7 @@
         android:layout_margin="20dp"
         android:backgroundTint="@color/colorAccent"
         app:borderWidth="0dp"
+        app:tint="@android:color/white"
         tools:src="@drawable/ic_baseline_favorite_border_24"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
