@@ -25,7 +25,7 @@ public class MainViewModel extends ViewModel {
 
         String url = "https://api.github.com/users";
         AsyncHttpClient client = new AsyncHttpClient();
-        client.addHeader("Authorization","token 6d62adc8cecb3a300ff29b1164bffdad4cc46d01");
+        client.addHeader("Authorization","<YOUR_TOKEN_HERE>");
         client.addHeader("User-Agent", "request");
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
