@@ -144,11 +144,6 @@ public class FavoriteActivity extends AppCompatActivity implements LoadUserFavor
             new LoadUserFavoriteAsync(context, (LoadUserFavoriteCallback) context).execute();
         }
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
 }
 
 interface LoadUserFavoriteCallback{

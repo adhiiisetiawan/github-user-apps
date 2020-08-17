@@ -38,8 +38,6 @@ public class DetailUserActivity extends AppCompatActivity {
 
     private ProgressBar progressBarProfile;
     private FloatingActionButton fab;
-    private User mUser;
-
     private TextView tvName;
     private TextView tvUsernameProfile;
     private TextView tvLocation;
@@ -53,16 +51,15 @@ public class DetailUserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_user);
-        getSupportActionBar().setTitle(R.string.detail_user);
 
         if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle("Detail User");
+            getSupportActionBar().setTitle(R.string.detail_user);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         fab = findViewById(R.id.floating_action);
 
-        mUser = getIntent().getParcelableExtra(EXTRA_USERNAME);
+        User mUser = getIntent().getParcelableExtra(EXTRA_USERNAME);
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this,getSupportFragmentManager());
         sectionsPagerAdapter.username = mUser.getUsername();
@@ -138,6 +135,7 @@ public class DetailUserActivity extends AppCompatActivity {
                 statusFavorite = false;
                 setStatusFavorite(statusFavorite);
             }
+            cursorUsername.close();
         }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,17 +143,20 @@ public class DetailUserActivity extends AppCompatActivity {
                 statusFavorite = !statusFavorite;
                 Cursor cursorClick = getContentResolver().query(uriByUsername, null, null, null, null);
                 Log.d(DetailUserActivity.class.getSimpleName(), "Cursor click: "+cursorClick);
-                if (cursorClick.getCount() < 1){
-                    insertDatabase(detailUserViewModel.getName().getValue(), detailUserViewModel.getUsernames().getValue(),
-                            detailUserViewModel.getAvatar().getValue(), detailUserViewModel.getLocation().getValue());
-                    Toast.makeText(DetailUserActivity.this, "Favorite", Toast.LENGTH_SHORT).show();
-                    statusFavorite = true;
-                    setStatusFavorite(statusFavorite);
-                }else if (cursorClick.getCount() >=1){
-                    getContentResolver().delete(uriByUsername, null, null);
-                    Toast.makeText(DetailUserActivity.this, "Delete", Toast.LENGTH_SHORT).show();
-                    statusFavorite = false;
-                    setStatusFavorite(statusFavorite);
+                if (cursorClick != null){
+                    if (cursorClick.getCount() < 1){
+                        insertDatabase(detailUserViewModel.getName().getValue(), detailUserViewModel.getUsernames().getValue(),
+                                detailUserViewModel.getAvatar().getValue(), detailUserViewModel.getLocation().getValue());
+                        Toast.makeText(DetailUserActivity.this, "Favorite", Toast.LENGTH_SHORT).show();
+                        statusFavorite = true;
+                        setStatusFavorite(statusFavorite);
+                    }else if (cursorClick.getCount() >=1){
+                        getContentResolver().delete(uriByUsername, null, null);
+                        Toast.makeText(DetailUserActivity.this, "Delete", Toast.LENGTH_SHORT).show();
+                        statusFavorite = false;
+                        setStatusFavorite(statusFavorite);
+                    }
+                    cursorClick.close();
                 }
             }
         });
@@ -179,19 +180,12 @@ public class DetailUserActivity extends AppCompatActivity {
         getContentResolver().insert(CONTENT_URI, contentValues);
     }
 
-    private boolean setStatusFavorite(Boolean statusFavorite){
+    private void setStatusFavorite(Boolean statusFavorite){
         if (statusFavorite){
             fab.setImageResource(R.drawable.ic_baseline_favorite_24);
         } else {
             fab.setImageResource(R.drawable.ic_baseline_favorite_border_24);
         }
-
-        return statusFavorite;
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 
     @Override

@@ -26,7 +26,6 @@ import java.util.ArrayList;
 
 public class FavoriteActivity extends AppCompatActivity implements LoadUserFavoriteCallback{
     private ProgressBar progressBar;
-    private RecyclerView rvUser;
     private UserFavoriteAdapter userFavoriteAdapter;
 
     @Override
@@ -39,7 +38,7 @@ public class FavoriteActivity extends AppCompatActivity implements LoadUserFavor
         }
 
         progressBar = findViewById(R.id.progressbar_fav);
-        rvUser = findViewById(R.id.recyclerview_fav);
+        RecyclerView rvUser = findViewById(R.id.recyclerview_fav);
         rvUser.setLayoutManager(new LinearLayoutManager(this));
         rvUser.setHasFixedSize(true);
         userFavoriteAdapter = new UserFavoriteAdapter(this);
@@ -82,7 +81,6 @@ public class FavoriteActivity extends AppCompatActivity implements LoadUserFavor
             userFavoriteAdapter.setListUser(users);
         } else {
             userFavoriteAdapter.setListUser(new ArrayList<User>());
-//            Toast.makeText(this, "No Data", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -128,7 +126,6 @@ public class FavoriteActivity extends AppCompatActivity implements LoadUserFavor
             this.context = context;
         }
 
-        //rubah onchange dg gambar tanpa toast
         @Override
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);

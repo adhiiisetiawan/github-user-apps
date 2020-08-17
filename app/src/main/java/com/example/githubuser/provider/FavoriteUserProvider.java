@@ -67,13 +67,10 @@ public class FavoriteUserProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         long added;
-        switch (mUriMatcher.match(uri)){
-            case FAVORITE_USER:
-                added = favoriteUserHelper.insert(values);
-                break;
-            default:
-                added = 0;
-                break;
+        if (mUriMatcher.match(uri) == FAVORITE_USER){
+            added = favoriteUserHelper.insert(values);
+        } else {
+            added = 0;
         }
         getContext().getContentResolver().notifyChange(CONTENT_URI, null);
         return Uri.parse(CONTENT_URI + "/" + added);
@@ -89,15 +86,11 @@ public class FavoriteUserProvider extends ContentProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         int deleted;
-        switch (mUriMatcher.match(uri)){
-            case FAVORITE_USER_ID:
-                deleted = favoriteUserHelper.deleteById(uri.getLastPathSegment());
-                break;
-            default:
-                deleted = 0;
-                break;
+        if (mUriMatcher.match(uri) == FAVORITE_USER_ID){
+            deleted = favoriteUserHelper.deleteById(uri.getLastPathSegment());
+        } else {
+            deleted = 0;
         }
-
         getContext().getContentResolver().notifyChange(CONTENT_URI, null);
         return deleted;
     }
