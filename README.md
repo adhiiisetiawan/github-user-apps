@@ -42,4 +42,4 @@ To-do list:
 Project is: _finished_
 
 ## Contact
-Created by [Adhi Setiawan](linkedin.com/in/adhiisetiawan) - feel free to contact me!
+Created by [Adhi Setiawan](https://wwww.linkedin.com/in/adhiisetiawan) - feel free to contact me!
