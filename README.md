@@ -1,5 +1,5 @@
 # Github User Apps
-> This repository is my submission in Dicoding class Belajar Fundamental Aplikasi Android
+> This is repository of my submission in Dicoding class Belajar Fundamental Aplikasi Android
 
 ## Table of contents
 * [Screenshots](#screenshots)
@@ -10,7 +10,7 @@
 * [Contact](#contact)
 
 ## Screenshots
-![Example screenshot](./Home.png)
+![Example screenshot](./Homes.png)
 
 ## Technologies
 * Tech 1 - version 1.0
