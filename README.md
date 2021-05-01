@@ -13,19 +13,22 @@
 ![Example screenshot](./Home6.png) ![Example screenshot](./Detail6.png)
 
 ## Technologies
-* Tech 1 - version 1.0
-* Tech 2 - version 2.0
-* Tech 3 - version 3.0
+* AndroidX
+* RecycleView
+* LoopJ
+* Glide
+* SQLite
 
 ## Setup
 Clone this repository and run in android studio
 
 ## Features
 List of features ready and TODOs for future development
-* Show github user
-* Search github user
-* Favorite github user and save to SQLite
-* Localization
+* MVVM (Model-View-ViewModel) Architecture
+* Localization for support Indonesian and English Language
+* SQLite for local database
+* Glide for load image from url
+* LoopJ to request api network
 
 ## Status
 Project is: _finished_
