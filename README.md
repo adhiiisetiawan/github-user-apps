@@ -10,7 +10,7 @@
 * [Contact](#contact)
 
 ## Screenshots
-![Example screenshot](./Homes.png)
+![Example screenshot](./Home(1).png)
 
 ## Technologies
 * Tech 1 - version 1.0
